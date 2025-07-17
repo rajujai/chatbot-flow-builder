@@ -13,7 +13,7 @@ const MessageNode = ({ type, data, selected }) => {
             }}
         >
             <Typography lineHeight={1} fontSize=".4rem" color="warning">{type}</Typography>
-            <Divider  />
+            <Divider sx={{width: 2}} />
             <Typography variant="body2" lineHeight={1}>{data.text}</Typography>
             <Handle type="source" position={Position.Right} id="a" />
             <Handle type="target" position={Position.Left} />

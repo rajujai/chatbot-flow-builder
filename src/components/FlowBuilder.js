@@ -6,12 +6,11 @@ import ReactFlow, {
     applyEdgeChanges,
     applyNodeChanges,
     Background,
-    Controls,
-    MiniMap,
     ReactFlowProvider
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { v4 as uuidv4 } from 'uuid'
+import FlowControls from './FlowControls'
 import NodePanel from './NodePanel'
 import SaveButton from './SaveButton'
 import SettingsPanel from './SettingsPanel'
@@ -171,8 +170,7 @@ const FlowBuilder = () => {
                             edgeTypes={edgeTypes}
                             fitView
                         >
-                            <MiniMap />
-                            <Controls />
+                            <FlowControls />
                             <Background />
                         </ReactFlow>
                         <SaveButton onSave={validateAndSave} />

@@ -31,9 +31,10 @@ const SettingsPanel = ({ node, updateNodeText, clearSelection }) => {
                 value={text}
                 onChange={handleChange}
                 fullWidth
-                slotProps={{
-                    input: {
-                        sx: { color: '#fff' },
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault()
+                        clearSelection()
                     }
                 }}
             />

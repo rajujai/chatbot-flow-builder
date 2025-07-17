@@ -21,9 +21,7 @@ const NodePanel = ({ nodes, onSelectNode, handleDelete }) => {
           sx={{
             p: 1,
             textAlign: 'center',
-            cursor: 'grab',
-            bgcolor: '#e0e0e0',
-            '&:hover': { bgcolor: '#cfe8fc' }
+            cursor: 'grab'
           }}
         >
           {nodeType}
@@ -39,9 +37,7 @@ const NodePanel = ({ nodes, onSelectNode, handleDelete }) => {
             onClick={() => onSelectNode(node)}
             sx={{
               p: 1,
-              cursor: 'pointer',
-              bgcolor: '#f0f0f0',
-              '&:hover': { bgcolor: '#cfe8fc' },
+              cursor: 'pointer'
             }}
           >
             <Typography lineHeight={1} fontSize={11} color="warning">{node.type}</Typography>
