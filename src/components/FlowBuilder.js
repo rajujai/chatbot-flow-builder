@@ -31,6 +31,29 @@ const FlowBuilder = () => {
         setEdges((eds) => applyEdgeChanges(changes, eds))
     }, [])
 
+    const onDragOver = useCallback((event) => {
+        event.preventDefault()
+        event.dataTransfer.dropEffect = 'move'
+    }, [])
+
+    const onDrop = useCallback(
+        (event) => {
+            event.preventDefault()
+
+            const type = event.dataTransfer.getData('application/reactflow')
+            if (!type) return
+
+            const bounds = event.target.getBoundingClientRect()
+            const position = {
+                x: event.clientX - bounds.left,
+                y: event.clientY - bounds.top,
+            }
+
+            addNode();
+        },
+        []
+    )
+
     const onConnect = useCallback(
         (params) => {
             const existingEdgeFromSource = edges.some(e => e.source === params.source)
@@ -51,7 +74,7 @@ const FlowBuilder = () => {
         setNodes((nds) => [...nds, newNode])
     }
 
-    const onNodeClick = (_, node) => setSelectedNode(node)
+    const onNodeClick = (_, node) => selectNode(node)
 
     const updateNodeText = (id, text) => {
         setNodes((nds) =>
@@ -71,17 +94,37 @@ const FlowBuilder = () => {
         }
     }
 
+    const selectNode = (node) => {
+        setSelectedNode(node)
+        setNodes((nds) =>
+            nds.map((n) => ({
+                ...n,
+                selected: n.id === node.id
+            }))
+        )
+    }
+
+    const clearSelection = () => {
+        setSelectedNode(null)
+        setNodes((nds) =>
+            nds.map((n) => ({
+                ...n,
+                selected: false
+            }))
+        )
+    }
+
     return (
         <ReactFlowProvider>
             <Grid container style={{ height: '100%' }}>
-                <Grid size={{ xs: 2 }} sx={{ bgcolor: '#f5f5f5', p: 2 }}>
+                <Grid size={{ xs: 2 }} p={2}>
                     {!selectedNode ? (
-                        <NodePanel onAddNode={addNode} />
+                        <NodePanel nodes={nodes} onSelectNode={selectNode} />
                     ) : (
                         <SettingsPanel
                             node={selectedNode}
                             updateNodeText={updateNodeText}
-                            clearSelection={() => setSelectedNode(null)}
+                            clearSelection={clearSelection}
                         />
                     )}
                 </Grid>
@@ -94,6 +137,8 @@ const FlowBuilder = () => {
                             onEdgesChange={onEdgesChange}
                             onConnect={onConnect}
                             onNodeClick={onNodeClick}
+                            onDrop={onDrop}
+                            onDragOver={onDragOver}
                             nodeTypes={nodeTypes}
                             fitView
                         >

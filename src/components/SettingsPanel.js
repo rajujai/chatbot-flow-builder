@@ -2,10 +2,10 @@ import { Button, Stack, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 const SettingsPanel = ({ node, updateNodeText, clearSelection }) => {
-    const [text, setText] = useState(node?.data?.label || '')
+    const [text, setText] = useState(node?.data?.text || '')
 
     useEffect(() => {
-        setText(node?.data?.label || '')
+        setText(node?.data?.text || '')
     }, [node])
 
     const handleChange = (e) => {
@@ -22,6 +22,11 @@ const SettingsPanel = ({ node, updateNodeText, clearSelection }) => {
                 value={text}
                 onChange={handleChange}
                 fullWidth
+                slotProps={{
+                    input: {
+                        sx: { color: '#fff' },
+                    }
+                }}
             />
             <Button variant="outlined" onClick={clearSelection}>Done</Button>
         </Stack>
