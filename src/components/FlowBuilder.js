@@ -1,3 +1,4 @@
+import { nodeTypes } from '@/types/NodeTypes'
 import { Box, Grid } from '@mui/material'
 import { useCallback, useState } from 'react'
 import ReactFlow, {
@@ -11,12 +12,10 @@ import ReactFlow, {
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { v4 as uuidv4 } from 'uuid'
-import CustomTextNode from './CustomTextNode'
 import NodePanel from './NodePanel'
 import SaveButton from './SaveButton'
 import SettingsPanel from './SettingsPanel'
 
-const nodeTypes = { text: CustomTextNode }
 
 const FlowBuilder = () => {
     const [nodes, setNodes] = useState([])
@@ -49,7 +48,7 @@ const FlowBuilder = () => {
                 y: event.clientY - bounds.top,
             }
 
-            addNode();
+            addNode(type, position);
         },
         []
     )
@@ -63,13 +62,13 @@ const FlowBuilder = () => {
         [edges]
     )
 
-    const addNode = () => {
+    const addNode = (type, position) => {
         const id = uuidv4()
         const newNode = {
             id,
-            type: 'text',
-            position: { x: 100, y: 100 },
-            data: { text: 'New Message' },
+            type,
+            position,
+            data: { text: 'New ' + type },
         }
         setNodes((nds) => [...nds, newNode])
     }
