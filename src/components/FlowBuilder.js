@@ -3,13 +3,12 @@ import { nodeTypes } from '@/types/NodeTypes'
 import { Box, Grid } from '@mui/material'
 import { useCallback, useEffect, useState } from 'react'
 import ReactFlow, {
-    addEdge,
     applyEdgeChanges,
     applyNodeChanges,
     Background,
     Controls,
     MiniMap,
-    ReactFlowProvider,
+    ReactFlowProvider
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { v4 as uuidv4 } from 'uuid'
@@ -132,12 +131,22 @@ const FlowBuilder = () => {
         )
     }
 
+    const handleDelete = (nodeId) => {
+        if (!window.confirm('Delete this node?')) return;
+
+        setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
+        setEdges((prevEdges) =>
+            prevEdges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+        );
+    };
+
+
     return (
         <ReactFlowProvider>
             <Grid container style={{ height: '100%' }}>
                 <Grid size={{ xs: 2 }} p={2}>
                     {!selectedNode ? (
-                        <NodePanel nodes={nodes} onSelectNode={selectNode} />
+                        <NodePanel nodes={nodes} onSelectNode={selectNode} handleDelete={handleDelete} />
                     ) : (
                         <SettingsPanel
                             node={selectedNode}

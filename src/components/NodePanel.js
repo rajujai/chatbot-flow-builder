@@ -1,7 +1,8 @@
-import { nodeTypes } from '@/types/NodeTypes'
-import { Divider, Paper, Stack, Typography } from '@mui/material'
+import { nodeTypes } from '@/types/NodeTypes';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Box, IconButton, Paper, Stack, Typography } from '@mui/material';
 
-const NodePanel = ({ nodes, onSelectNode }) => {
+const NodePanel = ({ nodes, onSelectNode, handleDelete }) => {
   const handleDragStart = (e, nodeType) => {
     e.dataTransfer.setData('application/reactflow', nodeType)
     e.dataTransfer.effectAllowed = 'move'
@@ -44,7 +45,35 @@ const NodePanel = ({ nodes, onSelectNode }) => {
             }}
           >
             <Typography lineHeight={1} fontSize={11} color="warning">{node.type}</Typography>
-            {node.data.text || 'Untitled'}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                overflow: 'hidden',
+              }}
+            >
+              <Typography
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  flexGrow: 1,
+                  pr: 1,
+                }}
+              >
+                {node.data.text || 'Untitled'}
+              </Typography>
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(node.id)
+                }}
+                size="small"
+              >
+                <DeleteForeverIcon fontSize="small" color="error" />
+              </IconButton>
+            </Box>
           </Paper>
         ))}
       </Stack>
