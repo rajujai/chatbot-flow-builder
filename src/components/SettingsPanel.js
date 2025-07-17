@@ -1,11 +1,19 @@
 import { Button, Stack, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const SettingsPanel = ({ node, updateNodeText, clearSelection }) => {
-    const [text, setText] = useState(node?.data?.text || '')
+    const [text, setText] = useState(node?.data?.text !== "New " + node.type ? node?.data?.text : '')
 
     useEffect(() => {
-        setText(node?.data?.text || '')
+        setText(node?.data?.text !== "New " + node.type ? node?.data?.text : '')
+    }, [node])
+
+    const inputRef = useRef(null)
+
+    useEffect(() => {
+        if (node && inputRef.current) {
+            inputRef.current.focus()
+        }
     }, [node])
 
     const handleChange = (e) => {
@@ -18,6 +26,7 @@ const SettingsPanel = ({ node, updateNodeText, clearSelection }) => {
         <Stack spacing={2}>
             <Typography variant="h6">Edit Message</Typography>
             <TextField
+                inputRef={inputRef}
                 label="Text"
                 value={text}
                 onChange={handleChange}

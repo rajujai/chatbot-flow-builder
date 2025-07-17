@@ -2,12 +2,12 @@ import { Button } from '@mui/material'
 
 const SaveButton = ({ onSave }) => (
     <Button
-        variant="contained"
+        variant="outlined"
         color="primary"
-        style={{ position: 'absolute', bottom: 20, right: 20, zIndex: 1000 }}
+        style={{ position: 'absolute', top: 20, right: 20, zIndex: 1000 }}
         onClick={onSave}
     >
-        Save Flow
+        Save Changes
     </Button>
 )
 

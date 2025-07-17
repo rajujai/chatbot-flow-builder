@@ -1,6 +1,7 @@
+import { edgeTypes } from '@/types/EdgeTypes'
 import { nodeTypes } from '@/types/NodeTypes'
 import { Box, Grid } from '@mui/material'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ReactFlow, {
     addEdge,
     applyEdgeChanges,
@@ -16,11 +17,23 @@ import NodePanel from './NodePanel'
 import SaveButton from './SaveButton'
 import SettingsPanel from './SettingsPanel'
 
+const LOCAL_STORAGE_KEY = 'chatbot-flow-data';
+
 
 const FlowBuilder = () => {
     const [nodes, setNodes] = useState([])
     const [edges, setEdges] = useState([])
     const [selectedNode, setSelectedNode] = useState(null)
+    const [reactFlowInstance, setReactFlowInstance] = useState(null)
+
+    useEffect(() => {
+        const saved = localStorage.getItem(LOCAL_STORAGE_KEY)
+        if (saved) {
+            const { nodes: savedNodes, edges: savedEdges } = JSON.parse(saved)
+            setNodes(savedNodes || [])
+            setEdges(savedEdges || [])
+        }
+    }, [])
 
     const onNodesChange = useCallback((changes) => {
         setNodes((nds) => applyNodeChanges(changes, nds))
@@ -43,21 +56,26 @@ const FlowBuilder = () => {
             if (!type) return
 
             const bounds = event.target.getBoundingClientRect()
-            const position = {
+            const position = reactFlowInstance.screenToFlowPosition({
                 x: event.clientX - bounds.left,
                 y: event.clientY - bounds.top,
-            }
+            })
 
             addNode(type, position);
         },
-        []
+        [reactFlowInstance]
     )
 
     const onConnect = useCallback(
         (params) => {
             const existingEdgeFromSource = edges.some(e => e.source === params.source)
             if (existingEdgeFromSource) return
-            setEdges((eds) => addEdge({ ...params, animated: true }, eds))
+            const newEdge = {
+                ...params,
+                id: `e-${params.source}-${params.target}`,
+                type: 'singleArrow'
+            };
+            setEdges((eds) => [...eds, newEdge]);
         },
         [edges]
     )
@@ -89,7 +107,8 @@ const FlowBuilder = () => {
         if (nodes.length > 1 && disconnectedNodes.length > 1) {
             alert('❌ Error: More than one node has no outgoing connection.')
         } else {
-            alert('✅ Flow saved!\n' + JSON.stringify({ nodes, edges }, null, 2))
+            alert('✅ Flow saved!')
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ nodes, edges }))
         }
     }
 
@@ -130,6 +149,7 @@ const FlowBuilder = () => {
                 <Grid size={{ xs: 10 }}>
                     <Box sx={{ height: '100%', width: '100%' }}>
                         <ReactFlow
+                            onInit={setReactFlowInstance}
                             nodes={nodes}
                             edges={edges}
                             onNodesChange={onNodesChange}
@@ -139,6 +159,7 @@ const FlowBuilder = () => {
                             onDrop={onDrop}
                             onDragOver={onDragOver}
                             nodeTypes={nodeTypes}
+                            edgeTypes={edgeTypes}
                             fitView
                         >
                             <MiniMap />
