@@ -40,3 +40,11 @@ a {
     color-scheme: dark;
   }
 }
+
+.react-flow__handle {
+  background: #1976d2;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
