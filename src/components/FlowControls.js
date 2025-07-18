@@ -1,3 +1,8 @@
+/**
+ * Provides controls for zooming, fitting the view, and displaying a minimap
+ * in the flow editor.
+ * It adapts its styles based on the current theme (dark or light mode).
+ */
 import { useTheme } from '@mui/material/styles';
 import { Controls, MiniMap } from 'reactflow';
 

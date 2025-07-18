@@ -1,3 +1,8 @@
+/**
+ * Displays a list of node types available for dragging into the canvas,
+ * as well as a list of existing nodes with options to select and delete them.
+ * It allows users to manage nodes in the flow builder interface.
+ */
 import { nodeTypes } from '@/types/NodeTypes';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Box, IconButton, Paper, Stack, Typography } from '@mui/material';

@@ -1,3 +1,9 @@
+/**
+ * Main component for building chatbot flows.
+ * It initializes the flow editor, handles node and edge changes, and provides controls for saving and editing nodes.
+ * The flow is saved to localStorage, allowing users to persist their work.
+ * Uses React Flow for the flow editor functionality.
+ */
 import { edgeTypes } from '@/types/EdgeTypes'
 import { nodeTypes } from '@/types/NodeTypes'
 import { Box, Grid } from '@mui/material'
@@ -16,7 +22,6 @@ import SaveButton from './SaveButton'
 import SettingsPanel from './SettingsPanel'
 
 const LOCAL_STORAGE_KEY = 'chatbot-flow-data';
-
 
 const FlowBuilder = () => {
     const [nodes, setNodes] = useState([])

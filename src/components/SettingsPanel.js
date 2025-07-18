@@ -1,3 +1,7 @@
+/**
+ * Allows users to edit the text of a node.
+ * Note: It only works for nodes of type 'message'. Changes required for other node types.
+ */
 import { Button, Stack, TextField, Typography } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 

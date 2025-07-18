@@ -1,3 +1,6 @@
+/**
+ * Displays a message with a type and text, with handles for connections
+ */
 import { Box, Divider, Typography } from '@mui/material'
 import { Handle, Position } from 'reactflow'
 
