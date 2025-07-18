@@ -7,7 +7,7 @@ const ColorModeContext = createContext();
 export const useColorMode = () => useContext(ColorModeContext);
 
 export const ThemeProviderWrapper = ({ children }) => {
-    const [mode, setMode] = useState('light');
+    const [mode, setMode] = useState('dark');
 
     const toggleColorMode = () => {
         setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
